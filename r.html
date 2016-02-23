@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>A new Javascript library: R.js</title>
+    <link href="http://fonts.googleapis.com/css?family=Lato:400,700" rel="stylesheet" type="text/css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 100%;
+        }
+
+        body {
+            font-family: "Lato", Arial, sans-serif;
+            font-weight: 400;
+            line-height: 1.5;
+            background: hsl(30, 5%, 96%);
+        }
+
+        h1, h2 {
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        h3, h4 {
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 1.602rem;
+        }
+
+        h2 {
+            font-size: 1.424rem;
+            border-bottom: 2px solid hsl(352, 64%, 32%);
+        }
+
+        h3 {
+            font-size: 1.266rem;
+        }
+
+        h4 {
+            font-size: 1.125rem;
+        }
+
+        main h2 + *,
+        main h3 + *,
+        main h4 + * {
+            margin-top: .5rem;
+        }
+
+        .intro {
+            font-size: 1.125rem;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        a {
+            color: hsl(352, 64%, 32%);
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .demo-button {
+            background: hsl(352, 64%, 32%);
+            color: #fff;
+            padding: .5rem;
+            border-radius: .25rem;
+            font-weight: bold;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 25%;
+            height: 100%;
+            background: hsl(30, 5%, 92%);
+        }
+
+        nav {
+            float: right;
+            width: 15vw;
+            padding: 2rem 2rem 0 0;
+        }
+
+        nav ul {
+            margin-top: .5rem;
+        }
+
+        nav ul + ul {
+            margin-top: 1.5rem;
+        }
+
+        main {
+            margin-left: 25%;
+            width: 60%;
+            padding: 2rem;
+        }
+
+        main > * + *,
+        .intro * + * {
+            margin-top: 1.5rem;
+        }
+
+        main h2 {
+            margin-top: 2rem;
+        }
+
+        main ul {
+            list-style: disc;
+            padding-left: 1.5rem;
+        }
+
+        pre {
+            background: #fff;
+            padding: .5rem;
+            font-family: monospace;
+            font-size: 1.125rem;
+        }
+
+        div[class^="demo-"] {
+            border: 1px solid #000;
+            background: #fff;
+            padding: .25rem;
+        }
+
+        div[class^="demo-"] p {
+            padding: .25rem;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid hsl(30, 5%, 82%);
+        }
+
+
+        .active {
+            background: hsl(30, 5%, 62%);
+            color: #fff;
+        }
+
+        .toggleclasstarget {
+            background: #f00;
+        }
+
+        .dommanipulation {
+            background: #0ff;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <h2>Index</h2>
+            <ul>
+                <li><a href="#feature-addclass">.addClass()</a></li>
+                <li><a href="#feature-after">.after()</a></li>
+                <li><a href="#feature-append">.append()</a></li>
+                <li><a href="#feature-before">.before()</a></li>
+                <li><a href="#feature-css">.css()</a></li>
+                <li><a href="#feature-each">.each()</a></li>
+                <li><a href="#feature-find">.find()</a></li>
+                <li><a href="#feature-hide">.hide()</a></li>
+                <li><a href="#feature-load">.load()</a></li>
+                <li><a href="#feature-next">.next()</a></li>
+                <li><a href="#feature-off">.off()</a></li>
+                <li><a href="#feature-on">.on()</a></li>
+                <li><a href="#feature-parent">.parent()</a></li>
+                <li><a href="#feature-prepend">.prepend()</a></li>
+                <li><a href="#feature-prev">.prev()</a></li>
+                <li><a href="#feature-ready">.ready()</a></li>
+                <li><a href="#feature-remove">.remove()</a></li>
+                <li><a href="#feature-removeclass">.removeClass()</a></li>
+                <li><a href="#feature-show">.show()</a></li>
+                <li><a href="#feature-toggle">.toggle()</a></li>
+                <li><a href="#feature-toggleclass">.toggleClass()</a></li>
+            </ul>
+
+            <ul>
+                <li><a href="#feature-extending">Extending</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <h1>About R</h1>
+        <div class="intro">
+            <p>R is a learning project for myself to see if I could somewhat mimic jQuery in a minimal and concise manner. It has the same method names to make it easier and most of the code is based on the code provided on <a href="http://youmightnotneedjquery.com">You Might Not Need jQuery</a>.
+            </p>
+
+            <p>My idea was to keep the structure very simple and concise, so that developers could select the methods they actually need and remove the rest, so that you don't have any bloat or unneeded code in your library. The current file size is 6.74KB, 2.25KB when minifyed.</p>
+
+            <p>All and any help is appreciated of course. Suggestions on other methods are welcome too.</p>
+
+            <p>&mdash; Robert (<a href="https://twitter.com/rvanderelst">@rvanderelst</a>)</p>
+        </div>
+
+        <h2>Browser support</h2>
+        <p>The code itself is for IE10+. There's still a lot of testing to be done on different browsers and devices.</p>
+
+        <h2 id="section-classes">Class manipulation</h2>
+
+        <h3 id="feature-addclass">.addClass()</h3>
+        <p>Method to add a single or multiple classes to an element.</p>
+
+        <h4>Usage</h4>
+        <pre>R('element').addClass('classname');<Br>R('element').addClass('classname1 classname2');</pre>
+
+        <h4>Demo</h4>
+
+        <div class="demo-addclass">
+            <p>An element to add a class to.</p>
+        </div>
+
+        <p>
+            <a class="demo-button" href="#demo-addclass">Add a class</a>
+        </p>
+
+        <hr>
+
+        <h3 id="feature-removeclass">.removeClass()</h3>
+        <p>Method to remove a single or multiple classes of an element.</p>
+
+        <h4>Usage</h4>
+        <pre>R('element').removeClass('classname');<Br>R('element').removeClass('classname1 classname2');</pre>
+
+        <h4>Demo</h4>
+
+        <div class="demo-removeclass">
+            <p class="active">An element to remove a class from.</p>
+        </div>
+
+        <p>
+            <a class="demo-button" href="#demo-removeclass">Remove a class</a>
+        </p>
+
+        <hr>
+
+        <h3 id="feature-toggleclass">.toggleClass()</h3>
+        <p>Method to add a class to an element if it doesn't have it, or remove the class when it does.</p>
+
+        <h4>Usage</h4>
+        <pre>R('element').toggleClass('classname');</pre>
+
+        <h4>Demo</h4>
+        <div class="demo-toggleclass">
+            <p>An element to toggle a class with.</p>
+        </div>
+
+        <p>
+            <a class="demo-button" href="#demo-toggleclass">Toggle a class</a>
+        </p>
+
+
+
+        <h2 id="section-addremove">Adding and removing elements</h2>
+
+        <h3 id="feature-before">.before()</h3>
+        <p>Method to add an element before the selected element.</p>
+
+        <h4>Usage</h4>
+        <pre>R('element').before('&lt;p&gt;An element before the selected one.&lt;/p&gt;');</pre>
+
+        <h4>Demo</h4>
+        <div class="demo-before">
+            <p>An element</p>
+        </div>
+
+        <p>
+            <a class="demo-button" href="#demo-before">Add an element</a>
+        </p>
+
+        <hr>
+
+        <h3 id="feature-after">.after()</h3>
+        <p>Method to add an element after the selected element.</p>
+
+        <h4>Usage</h4>
+        <pre>R('element').after('&lt;p&gt;An element after the selected one.&lt;/p&gt;');</pre>
+
+        <h4>Demo</h4>
+        <div class="demo-after">
+            <p>An element</p>
+        </div>
+
+        <p>
+            <a class="demo-button" href="#demo-after">Add an element</a>
+        </p>
+
+        <hr>
+
+        <h3 id="feature-prepend">.prepend()</h3>
+        <p>Method to insert an element before the first child of the selected element.</p>
+
+        <h4>Usage</h4>
+        <pre>R('element').prepend('&lt;p&gt;An element inserted before the first child.&lt;/p&gt;');</pre>
+
+        <h4>Demo</h4>
+        <div class="demo-prepend">
+            <p>An element</p>
+        </div>
+
+        <p>
+            <a class="demo-button" href="#demo-prepend">Prepend an element</a>
+        </p>
+
+        <hr>
+
+        <h3 id="feature-append">.append()</h3>
+        <p>Method to insert an element after the last child of the selected element.</p>
+
+        <h4>Usage</h4>
+        <pre>R('element').append('&lt;p&gt;An element inserted after the last child.&lt;/p&gt;');</pre>
+
+        <h4>Demo</h4>
+        <div class="demo-append">
+            <p>An element</p>
+        </div>
+
+        <p>
+            <a class="demo-button" href="#demo-append">Append an element</a>
+        </p>
+
+        <hr>
+
+        <h3 id="feature-remove">.remove()</h3>
+        <p>Method to remove an element from the DOM.</p>
+
+        <h4>Usage</h4>
+        <pre>R('.demo-remove p').remove();</pre>
+
+        <h4>Demo</h4>
+        <div class="demo-remove">
+            <p>An element</p>
+        </div>
+
+        <p>
+            <a class="demo-button" href="#demo-remove">Remove an element</a>
+        </p>
+
+
+
+        <h2 id="section-showhide">Showing and hiding elements</h2>
+
+        <h3 id="feature-show">.show()</h3>
+        <p>Method to make an element visible.</p>
+
+        <h4>Usage</h4>
+        <pre>R('.demo-show').show();</pre>
+
+        <h4>Demo</h4>
+        <div class="demo-show" style="display: none;">
+            <p>This was an invisible element</p>
+        </div>
+
+        <p>
+            <a class="demo-button" href="#demo-show">Show an element</a>
+        </p>
+
+        <hr>
+
+        <h3 id="feature-hide">.hide()</h3>
+        <p>Method to make an element invisible.</p>
+
+        <h4>Usage</h4>
+        <pre>R('.demo-show').show();</pre>
+
+        <h4>Demo</h4>
+        <div class="demo-hide">
+            <p>This is an element</p>
+        </div>
+
+        <p>
+            <a class="demo-button" href="#demo-hide">Hide an element</a>
+        </p>
+
+        <hr>
+
+        <h3 id="feature-toggle">.toggle()</h3>
+        <p>Method to make an element invisible.</p>
+
+        <h4>Usage</h4>
+        <pre>R('.demo-show').toggle();</pre>
+
+        <h4>Demo</h4>
+        <div class="demo-toggle">
+            <p>Toggle this element</p>
+        </div>
+
+        <p>
+            <a class="demo-button" href="#demo-toggle">Toggle an element</a>
+        </p>
+
+        <h2 id="section-styles">Adding styles</h2>
+
+        <h3 id="feature-css">.css()</h3>
+        <p>Method to make an element invisible.</p>
+
+        <h4>Usage</h4>
+        <pre>R('.demo-show p').css({'background': '#861D2B', 'color': 'fff'});</pre>
+
+        <h4>Demo</h4>
+        <div class="demo-css">
+            <p>Element to be styled</p>
+        </div>
+
+        <p>
+            <a class="demo-button" href="#demo-css">Alter CSS</a>
+        </p>
+
+        <h2>Event handling</h2>
+        <h3 id="feature-on">.on()</h3>
+        <p>Attach an event listener to an element</p>
+
+        <h4>Usage</h4>
+        <pre>R('element').on('click', function () { ... });</pre>
+
+        <hr>
+
+        <h3 id="feature-off">.off()</h3>
+        <p>Remove an event listener to an element</p>
+
+        <h4>Usage</h4>
+        <pre>R('element').off();</pre>
+
+        <hr>
+
+        <h2>DOM loaded</h2>
+
+        <h3 id="feature-ready">.ready()</h3>
+        <p>Execute a function when the DOM is fully loaded.</p>
+
+        <h4>Usage</h4>
+        <pre>R(document).ready(function () { ... });</pre>
+
+        <hr>
+
+        <h3 id="feature-load">.load()</h3>
+        <p>Execute a function when the page is fully loaded.</p>
+
+        <h4>Usage</h4>
+        <pre>R(document).load(function () { ... });</pre>
+
+
+
+        <h2>DOM traversing</h2>
+
+        <h3 id="feature-find">.find()</h3>
+
+        <hr>
+
+        <h3 id="feature-prev">.prev()</h3>
+
+        <hr>
+
+        <h3 id="feature-next">.next()</h3>
+
+        <hr>
+
+        <h3 id="feature-parent">.parent()</h3>
+
+        <div class="nesting">
+            <div class="parent">
+                <p class="prev">Prev</p>
+                <p class="child">Child</p>
+                <p class="next">Next</p>
+            </div>
+        </div>
+
+        <h2>Looping</h2>
+
+        <h3 id="feature-each">.each()</h3>
+        <p>Execute a function for each matched element</p>
+        <pre>R('element').each(function () { ... });</pre>
+
+        <h2 id="feature-extending">Extending</h2>
+        <p>It's possible to extend R with your own plugins, which is always handy of course.</p>
+        <pre>R.fn.plugin = function () {<br>    // Code goes here;<br>}<br><br>R('body').plugin();</pre>
+
+    </main>
+
+    <script src="r.js"></script>
+    <script>
+    // Classes
+    R('[href="#demo-addclass"]').on('click', function (e) {
+        e.preventDefault();
+        R('.demo-addclass p').addClass('active');
+    })
+
+    R('[href="#demo-removeclass"]').on('click', function (e) {
+        e.preventDefault();
+        R('.demo-removeclass p').removeClass('active');
+    })
+
+    R('[href="#demo-toggleclass"]').on('click', function (e) {
+        e.preventDefault();
+        R('.demo-toggleclass p').toggleClass('active');
+    })
+
+    // DOM manipulation
+    R('[href="#demo-before"]').on('click', function (e) {
+        e.preventDefault();
+        R('.demo-before').before('<p>This is before</p>');
+    });
+
+    R('[href="#demo-after"]').on('click', function (e) {
+        e.preventDefault();
+        R('.demo-after').after('<p>This is after</p>');
+    });
+
+    R('[href="#demo-prepend"]').on('click', function (e) {
+        e.preventDefault();
+        R('.demo-prepend').prepend('<em>Prepend text before with HTML</em>');
+    });
+
+    R('[href="#demo-append"]').on('click', function (e) {
+        e.preventDefault();
+        R('.demo-append').append('<em>append text after with HTML</em>');
+    });
+
+    R('[href="#demo-remove"]').on('click', function (e) {
+        e.preventDefault();
+        R('.demo-remove p').remove();
+    });
+
+    // Show,Hide, Toggle
+    R('[href="#demo-show"]').on('click', function (e) {
+        e.preventDefault();
+        R('.demo-show').show();
+    });
+
+    R('[href="#demo-hide"]').on('click', function (e) {
+        e.preventDefault();
+        R('.demo-hide').hide();
+    });
+
+    R('[href="#demo-toggle"]').on('click', function (e) {
+        e.preventDefault();
+        R('.demo-toggle').toggle();
+    });
+
+    // CSS
+    R('[href="#demo-css"]').on('click', function (e) {
+        e.preventDefault();
+        R('.demo-css p').css({'background': '#861D2B', 'color': '#fff'});
+    });
+    </script>
+</body>
+</html>
